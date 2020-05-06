@@ -3,7 +3,7 @@ package MyPack;
 
 import java.util.Random;
 
-//Проект для курсовой по теории графов.
+//Часть проект для курсовой по теории графов.
 public class TreapClass<T> implements Tree<T> {
 
     static private Random rand = new Random();
