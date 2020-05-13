@@ -3,7 +3,6 @@ package MyPack;
 
 import java.util.Random;
 
-//Часть проект для курсовой по теории графов.
 public class TreapClass<T> implements Tree<T> {
 
     static private Random rand = new Random();
@@ -41,6 +40,13 @@ public class TreapClass<T> implements Tree<T> {
         this.data = data;
     }
 
+    /**
+     * Слияние
+     *
+     * Параметр L левое поддерево
+     * Параметр R правое поддерево
+     * Возвращает Объединённое дерево
+     */
 
     public static TreapClass Merge(TreapClass L, TreapClass R){
         if (L == null) return R;
@@ -53,6 +59,15 @@ public class TreapClass<T> implements Tree<T> {
         }
 
     }
+
+    /**
+     * Разрезание дерева
+     *
+     * Параметр L левое дерево
+     * Параметр R правое дерево
+     * Параметр newTree это измененная ветка правого или левого поддерева, в зависимости от случая
+     * Возвращает Массив, состоящий из левого и правого дерева после разрезания
+     */
 
     public TreapClass[] Split(int id){
         TreapClass newTree = null;
@@ -79,6 +94,13 @@ public class TreapClass<T> implements Tree<T> {
         return new TreapClass[]{L,R};
     }
 
+    /**
+     * Добавление элемента
+     * Добавление происходит посредством вызова вспомогательного метода Add, который возвращает новое дерево
+     * После чего текущее дерево заменяется на новое
+     * Возвращает правду
+     */
+
     @Override
     public boolean push(int id, T data){
         TreapClass tree = Add(id,data);
@@ -90,6 +112,13 @@ public class TreapClass<T> implements Tree<T> {
         return true;
     }
 
+    /**
+     * Вспомогательный метод для добавления элемента
+     * Добавление происходит посредством того, что по элементу, который мы хотим добавить, разрезается дерево
+     * После чего мы методом слияние соединяем полученные правое и левое дерево и новый элемент.
+     * Возвращает новое дерево
+     */
+
     private TreapClass Add(int id, T data) {
         TreapClass[] t = Split(id);
         TreapClass l = t[0];
@@ -98,10 +127,22 @@ public class TreapClass<T> implements Tree<T> {
         return  Merge(Merge(l,m),r);
     }
 
+    /**
+     * Метод удаления элемента
+     * С помощью вспомогательного метода Remove, удаляет элемент из дерева и получает данные
+     * Возвращает данные элемента, который мы удалили
+     */
+
     @Override
     public T pop(int id) {
         return (T) Remove(id)[1];
     }
+
+    /**
+     * Вспомогательный метод удаления элемента
+     * Ищем элемент, который мы хотим удалить, после чего методом слияния привязываем к его родителю детей удаленного элемента, если такие есть
+     * Возвращает массив, состоящий из дерева и данных удаленного элемента
+     */
 
     private Object[] Remove(int id){
         T d = null;
@@ -123,6 +164,12 @@ public class TreapClass<T> implements Tree<T> {
         return new Object[]{this,d};
     }
 
+    /**
+     * Метод поиска элемента
+     * Производим спуск через потомков
+     * Возвращает данные найденного элемента, если такой элемент существует
+     */
+
     @Override
     public T find(int value){
         if(id == value)
@@ -136,6 +183,13 @@ public class TreapClass<T> implements Tree<T> {
         return null;
 
     }
+
+    /**
+     * Метод нахождения роста дерева
+     * Производим спуск через потомков
+     * Параметр deep считывает высоту, увеличиваясь, во время прохождения по этажам
+     * Возвращает высоту самой длинной ветки
+     */
 
     public int deep(TreapClass L, TreapClass R) {
         int deep = 1;
