@@ -129,40 +129,29 @@ public class TreapClass<T> implements Tree<T> {
 
     /**
      * Метод удаления элемента
-     * С помощью вспомогательного метода Remove, удаляет элемент из дерева и получает данные
+     * С помощью вспомогательного метода find мы находим элемент, который хотим удалить и получаем его данные
+     * После чего двумя методами Split мы делим дерево на три части: 1)все элементы меньше искомого 2)искомый элемент 3)все элементы больше искомого
+     * Далее с помощью метода Merge мы соединяем 1 и 3 дерево и получаем новое, которое не содержит элемент, который мы хотим удалить
      * Возвращает данные элемента, который мы удалили
      */
 
     @Override
     public T pop(int id) {
-        return (T) Remove(id)[1];
+        T data = this.find(id);
+        TreapClass l, r;
+        TreapClass[] gg =  this.Split(id);
+        l = gg[0];
+        gg = gg[1].Split(id+1);
+        r = gg[1];
+        TreapClass tree = Merge(l,r);
+        this.id = tree.id;
+        this.Left = tree.Left;
+        this.Right = tree.Right;
+        this.data = (T) tree.data;
+        return data;
     }
 
     /**
-     * Вспомогательный метод удаления элемента
-     * Ищем элемент, который мы хотим удалить, после чего методом слияния привязываем к его родителю детей удаленного элемента, если такие есть
-     * Возвращает массив, состоящий из дерева и данных удаленного элемента
-     */
-
-    private Object[] Remove(int id){
-        T d = null;
-        if(this.id == id){
-            return new Object[]{ Merge(Left, Right),data};
-        }
-        if(this.id > id)
-            if(Left != null){
-                Object[] gg = Left.Remove(id);
-                Left = (TreapClass)gg[0];
-                d = (T)gg[1];
-            }
-        if(this.id < id)
-            if(Right != null) {
-                Object[] gg = Right.Remove(id);
-                Right = (TreapClass)gg[0];
-                d = (T)gg[1];
-            }
-        return new Object[]{this,d};
-    }
 
     /**
      * Метод поиска элемента
