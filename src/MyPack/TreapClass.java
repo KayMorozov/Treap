@@ -6,8 +6,8 @@ import java.util.Random;
 public class TreapClass<T> implements Tree<T> {
 
     static private Random rand = new Random();
-    public int id;
-    public int y;
+    private int id;
+    private int y;
     public TreapClass Left;
     public TreapClass Right;
     private T data;
